@@ -1,25 +1,33 @@
 import java.net.*;
 import java.io.*;
-public class DateServer
+
+public class MessageReader
 {
-  public static void main(String[] args) 
+ private static final int E_FAILURE = 1;
+
+ public static void main(String[] args)
+ {
+  if (args.length < 1)
   {
-  try {
-    ServerSocket sock = new ServerSocket(6013);
-// now listen for connections
-    while (true) 
-        {
-        Socket client = sock.accept();
-        PrintWriter pout = new
-        PrintWriter(client.getOutputStream(), true);
-// write the Date to the socket
-        pout.println("Message from server to client.");
-// close the socket and resume
-// listening for connections
-        client.close();
-        }
-      }   
-catch (IOException ioe)   
-  {System.err.println(ioe);}
+   System.err.println("usage: java MessageReader port");
+   System.exit(E_FAILURE);
   }
+  int port = Integer.parseInt(args[0]);
+  try {
+   ServerSocket sock = new ServerSocket(port);
+   while (true)
+   {
+    Socket client = sock.accept();
+    BufferedReader bin = new BufferedReader(new InputStreamReader(client.getInputStream()));
+    String line;
+    while ((line = bin.readLine()) != null)
+     System.out.println(line);
+    client.close();
+   }
+  }
+  catch (IOException ioe)
+  {
+   System.err.println(ioe);
+  }
+ }
 }
