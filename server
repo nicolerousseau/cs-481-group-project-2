@@ -6,13 +6,13 @@ public class Server
 {
 	public static void main(String[] args)
 	{
-		try{
+		
 			Scanner scan = new Scanner(System.in);  //allows user to choose a port
 			System.out.print("Port: ");
 			int port = scan.nextInt();
 			
 			ServerSocket sock =null;   //create a server socket
-		
+		try{
 			sock = new ServerSocket(port);
 	
 			Socket client = null;   //create a socket
