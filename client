@@ -6,12 +6,13 @@ public class Client
 {
 	public static void main (String[] args)
 	{
-		try
-		{
+		
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Port: ");
 		int port = scan.nextInt();
-			
+		
+		try
+		{	
 		Socket sock = new Socket ("localhost", port);
 		
 		Thread listen = new Thread(new ThreadSocket(sock));
