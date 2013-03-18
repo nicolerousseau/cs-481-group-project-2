@@ -4,23 +4,21 @@ import java.util.Scanner;
 
 public class Server 
 {
- public static void main(String[] args)
+	public static void main(String[] args)
 	{
 		try{
-			Scanner scan = new Scanner(System.in);
+			Scanner scan = new Scanner(System.in);  //allows user to choose a port
 			System.out.print("Port: ");
 			int port = scan.nextInt();
 			
-			ServerSocket sock =null;
+			ServerSocket sock =null;   //create a server socket
 		
 			sock = new ServerSocket(port);
 	
-		
-			Socket client = null;   
-			//wait for client, when client connection established, a new socket object is created
+			Socket client = null;   //create a socket
 			client = sock.accept(); 
 	
-			Thread listen = new Thread(new ThreadSocket(client));
+			Thread listen = new Thread(new ThreadSocket(client));  //create a thread
 			listen.start();
 	
 			PrintWriter out = new PrintWriter(client.getOutputStream(), true);
@@ -30,8 +28,9 @@ public class Server
 			//read from socket
 	
 	
-			while (true)   //read from socket
-			{out.println(in.readLine());         //send message back to the client
+			while (true) 
+			{out.println(in.readLine());        
+			//print from socket
 		    if (in.readLine().equals("stop"))            //end loop
 		       break;  }
 			
@@ -46,4 +45,5 @@ public class Server
 	}	
 
 }
+
 
