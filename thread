@@ -1,0 +1,13 @@
+public class ThreadSocket implements Runnable
+{
+
+  
+
+	
+	public void run() 
+	{
+	
+		
+	}
+	
+}
