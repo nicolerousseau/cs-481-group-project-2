@@ -1,12 +1,23 @@
+import java.io.*;
+import java.net.*;
+
 public class ThreadSocket implements Runnable
 {
-
-  
-
+	Socket sock;
+	
+	public ThreadSocket(Socket sock)
+	{
+		this.sock = sock;
+	}
 	
 	public void run() 
 	{
-	
+		try 
+		{
+		BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+		while(true)
+		System.out.println(in.readLine());} 
+		catch (IOException e) {e.printStackTrace();}
 		
 	}
 	
