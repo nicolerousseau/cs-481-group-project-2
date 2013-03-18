@@ -10,6 +10,7 @@ public class ThreadSocket implements Runnable
 		this.sock = sock;
 	}
 	
+	//a thread is used so client and server can both interact with the socket at the same time
 	public void run() 
 	{
 		try 
