@@ -1,54 +1,39 @@
-import java.net.*;
-import java.io.*;
-
-public class MessageWriter
+public class Client 
 {
- private static final int E_FAILURE = 1;
-
- public static void main(String[] args)
- {
-  if (args.length < 2)
-  {
-   System.err.println("usage: java MessageWriter hostname port");
-   System.exit(E_FAILURE);
-  }
-  int port = Integer.parseInt(args[1]);
-  Socket sock = null;
-  PrintWriter sw = null;
-  try
-  {
-   sock = new Socket(args[0], port);
-   sw = new PrintWriter(sock.getOutputStream(), true);
-  }
-  catch (UnknownHostException e)
-  {
-   System.err.println("MessageWriter: " + e);
-   System.exit(E_FAILURE);
-  }
-  catch (IOException e)
-  {
-   System.err.println("MessageWriter: " + e);
-   System.exit(E_FAILURE);
-  }
-  BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  while (true)
-  {
-   System.out.print(">>> ");
-   System.out.flush();
-   String line;
-   try
-   {
-    line = br.readLine();
-   }
-   catch (IOException e)
-   {
-    break;
-   }
-   if (line == null)
-    break;
-   else if (!line.isEmpty())
-    sw.println(line);
-  }
- }
+ public static void main (String[] args)
+	{
+		try
+		{
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Port: ");
+		int port = scan.nextInt();
+			
+		Socket sock = new Socket ("localhost", port);
+		
+		Thread listen = new Thread(new ThreadSocket(sock));
+		listen.start();
+		
+		PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
+		//create stream to send messages to server
+        
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+         //create stream to read messages from server
+        
+        while(true)
+        	{
+               System.out.println(in.readLine());  //print from the server
+               if (in.readLine().equals("stop"))
+        			break;   //end loop when "stop" entered
+        	}
+            scan.close();                        //close streams
+        	in.close();  
+        	out.close(); 
+        	sock.close();
+        	//close socket
+        }  
+        catch (IOException e) {e.printStackTrace();}
+        
+ 	}
 }
+
 
