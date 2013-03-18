@@ -1,33 +1,49 @@
-import java.net.*;
 import java.io.*;
+import java.net.*;
+import java.util.Scanner;
 
-public class MessageReader
+public class Server 
 {
- private static final int E_FAILURE = 1;
-
  public static void main(String[] args)
- {
-  if (args.length < 1)
-  {
-   System.err.println("usage: java MessageReader port");
-   System.exit(E_FAILURE);
-  }
-  int port = Integer.parseInt(args[0]);
-  try {
-   ServerSocket sock = new ServerSocket(port);
-   while (true)
-   {
-    Socket client = sock.accept();
-    BufferedReader bin = new BufferedReader(new InputStreamReader(client.getInputStream()));
-    String line;
-    while ((line = bin.readLine()) != null)
-     System.out.println(line);
-    client.close();
-   }
-  }
-  catch (IOException ioe)
-  {
-   System.err.println(ioe);
-  }
- }
+	{
+		try{
+			Scanner scan = new Scanner(System.in);
+			System.out.print("Port: ");
+			int port = scan.nextInt();
+			
+			ServerSocket sock =null;
+		
+			sock = new ServerSocket(port);
+	
+		
+			Socket client = null;   
+			//wait for client, when client connection established, a new socket object is created
+			client = sock.accept(); 
+	
+			Thread listen = new Thread(new ThreadSocket(client));
+			listen.start();
+	
+			PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+			//write to socket
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(System.in)); 
+			//read from socket
+	
+	
+			while (true)   //read from socket
+			{out.println(in.readLine());         //send message back to the client
+		    if (in.readLine().equals("stop"))            //end loop
+		       break;  }
+			
+			
+			scan.close();                       //close scan
+			in.close();                           //close streams
+			out.close();	
+			sock.close();                      //close sockets
+			client.close();
+		}catch  (IOException e) {System.out.println(e);}        
+
+	}	
+
 }
+
